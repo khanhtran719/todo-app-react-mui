@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext} from "react";
 //mui component
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -25,7 +25,7 @@ const Home = () => {
                 date,
                 completed: false
             }]);
-            setDate(""); setName("");
+            setDate(""); setName("");           
         } else {
             alert("Please, Fill in the information!!!");
         }

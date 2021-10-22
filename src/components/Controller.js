@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Paper from '@mui/material/Paper';
@@ -15,7 +15,14 @@ import TimelineIcon from '@mui/icons-material/Timeline';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import avt from "../assets/avatar.jpg";
+
+import { MyContext } from "../contexts/MyContext";
 const Controller = () => {
+    const { todo } = useContext(MyContext);
+    
+    useEffect(() =>{
+        localStorage.setItem("todos", JSON.stringify(todo));
+    })
     return (
         <Paper
             elevation={24}
