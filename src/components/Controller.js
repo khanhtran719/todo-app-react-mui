@@ -25,7 +25,8 @@ const Controller = () => {
         if(todos) {
             setTodo(JSON.parse(todos));
         }
-    },[])
+    },[setTodo])
+    
     useEffect(() =>{
         localStorage.setItem("todos", JSON.stringify(todo));
     },[todo])
