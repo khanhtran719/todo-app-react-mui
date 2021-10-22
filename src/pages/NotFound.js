@@ -13,7 +13,7 @@ const NotFound = () => {
                         <Box
                             fontSize="32px"
                             fontWeight="500"
-                            mr={2} p={3}
+                            mr={2}
                         >
                             Not Found!!!
                         </Box>

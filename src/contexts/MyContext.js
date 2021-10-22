@@ -6,7 +6,7 @@ export const MyContext = createContext({
 });
 
 export const MyContextProvider = ({children}) => {
-    const [myTodo, setMyTodo] = useState([...JSON.parse(localStorage.getItem("todos"))]);
+    const [myTodo, setMyTodo] = useState([]);
     return (
         <MyContext.Provider value={{
             todo: myTodo,

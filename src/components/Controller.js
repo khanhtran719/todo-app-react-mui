@@ -16,13 +16,19 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import avt from "../assets/avatar.jpg";
 
+
 import { MyContext } from "../contexts/MyContext";
 const Controller = () => {
-    const { todo } = useContext(MyContext);
-    
+    const { todo, setTodo } = useContext(MyContext);
+    useEffect(() => {
+        const todos = localStorage.getItem("todos");
+        if(todos) {
+            setTodo(JSON.parse(todos));
+        }
+    },[])
     useEffect(() =>{
         localStorage.setItem("todos", JSON.stringify(todo));
-    })
+    },[todo])
     return (
         <Paper
             elevation={24}
