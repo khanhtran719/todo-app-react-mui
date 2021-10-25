@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext} from "react";
 //mui component
 // import Box from "@mui/material/Box";
 import {
@@ -17,7 +17,6 @@ import { MyContext } from "../contexts/MyContext";
 
 const TodoList = () => {
     const { todo, setTodo } = useContext(MyContext);
-
     const formatDate = (date) => {
         const monthNames = ["January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"];
@@ -27,6 +26,12 @@ const TodoList = () => {
         const year = dateObj.getFullYear();
         const output = month + ' ' + day + ',' + year;
         return output;
+    }
+    const formatTime = (date) => {
+        const dateObj = new Date(date);
+        const hour = String(dateObj.getHours()).padStart(2, '0');
+        const minute = String(dateObj.getMinutes()).padStart(2, '0');
+        return hour + ":" + minute;
     }
 
     const onDeleteItem = (i) => {
@@ -54,7 +59,7 @@ const TodoList = () => {
                         <TableRow key={index}>
                             <TableCell align="center">{index + 1}</TableCell>
                             <TableCell align="center">{item.name}</TableCell>
-                            <TableCell align="center">{formatDate(item.date)}</TableCell>
+                            <TableCell align="center">{formatTime(item.date)}, {formatDate(item.date)}</TableCell>
                             <TableCell align="center">
                                 <Checkbox
                                     checked={item.completed}

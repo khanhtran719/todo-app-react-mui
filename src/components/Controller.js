@@ -25,11 +25,11 @@ const Controller = () => {
         if(todos) {
             setTodo(JSON.parse(todos));
         }
-    },[setTodo])
+    },[setTodo]);
     
     useEffect(() =>{
         localStorage.setItem("todos", JSON.stringify(todo));
-    },[todo])
+    },[todo]);
     return (
         <Paper
             elevation={24}

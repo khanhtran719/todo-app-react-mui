@@ -35,6 +35,12 @@ const TimeLine = () => {
         const output = month + ' ' + day + ', ' + year;
         return output;
     }
+    const formatTime = (date) => {
+        const dateObj = new Date(date);
+        const hour = String(dateObj.getHours()).padStart(2, '0');
+        const minute = String(dateObj.getMinutes()).padStart(2, '0');
+        return hour + ":" + minute;
+    }
     const onDeleteItem = (i) => {
         setTodo(todo.filter((item, index) => index !== i));
     }
@@ -57,7 +63,7 @@ const TimeLine = () => {
                         {name}
                     </Box>
                     <Box>
-                        {formatDate(date)}
+                        {formatTime(date)}, {formatDate(date)}
                     </Box>
                 </Box>
             </Paper>
@@ -74,7 +80,7 @@ const TimeLine = () => {
                         {name}
                     </Box>
                     <Box>
-                        {formatDate(date)}
+                        {formatTime(date)}, {formatDate(date)}
                     </Box>
                 </Box>
                 <IconButton aria-label="delete" onClick={onDeleteItem.bind(this, index)}>
