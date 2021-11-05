@@ -29,7 +29,6 @@ const Home = () => {
         if (reason === 'clickaway') {
             return;
         }
-
         setOpen(false);
     };
     const [addTask, setAddTask] = useState(false);
@@ -52,9 +51,15 @@ const Home = () => {
     const closeEditTask = () => {
         setEditTask(false);
     }
+    const formatDatetime = (date, time) => {
+        let hours = Number(time[0] + time[1]);
+        let minutes = Number(time[3] + time[4]);
+        let newDate = new Date(date);
+        return new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDay(), hours, minutes, 0);
+    }
     const sortDeadline = () => {
         setTodo([...todo].sort(function (a, b) {
-            return new Date(a.date) - new Date(b.date);
+            return formatDatetime(a.date, a.startTime) - formatDatetime(b.date, b.startTime);
         }));
     }
     const clearTodo = () => {
