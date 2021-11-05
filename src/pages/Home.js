@@ -3,35 +3,57 @@ import React, { useState, useContext } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Paper from '@mui/material/Paper';
-import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 //icon
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 //mycontext
 import { MyContext } from "../contexts/MyContext";
 //component
 import TodoList from "../components/TodoList";
+import AddTaskForm from "../components/AddTask";
+import EditTaskForm from "../components/EditTask";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const Home = () => {
-    const [date, setDate] = useState("");
-    const [name, setName] = useState("");
+    const [open, setOpen] = React.useState(false);
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
+    const [addTask, setAddTask] = useState(false);
+    const [editTask, setEditTask] = useState(false);
+    const [mode, setMode] = useState("");
+    const [idx, setIdx] = useState("");
 
     const { todo, setTodo } = useContext(MyContext);
 
-    const handleUpdate = (event) => {
-        event.preventDefault();
-        if (name !== "" && date !== "") {
-            setTodo([...todo, {
-                name,
-                date,
-                completed: false
-            }]);
-            setDate(""); setName("");
-        } else {
-            alert("Please, Fill in the information!!!");
-        }
+    const openAddTask = () => {
+        setAddTask(true);
+    }
+    const closeAddTask = () => {
+        setAddTask(false);
+    }
+
+    const openEditTask = (i) => {
+        setEditTask(true);
+    }
+    const closeEditTask = () => {
+        setEditTask(false);
     }
     const sortDeadline = () => {
-        setTodo([...todo].sort(function(a, b){
+        setTodo([...todo].sort(function (a, b) {
             return new Date(a.date) - new Date(b.date);
         }));
     }
@@ -43,30 +65,62 @@ const Home = () => {
                 textAlign="center"
                 pt={3} pb={3}
             >
-                Add new to-do
+                <Button
+                    size="small"
+                    color="info"
+                    variant="contained"
+                    onClick={openAddTask}
+                >
+                    Add new task
+                </Button>
             </Box>
         );
     }
     const activeTodo = () => {
         return (
             <Box>
-                <Box display="flex" justifyContent="flex-end" m={1} mt={3}>
+                <Box display="flex" justifyContent="space-between" m={1} mt={3}>
                     <Button
                         size="small"
                         color="info"
                         variant="contained"
-                        onClick={sortDeadline}
+                        onClick={openAddTask}
                     >
-                        Sort by deadline
+                        Add new task
                     </Button>
+                    <Box display="flex" justifyContent="space-between">
+                        <Button
+                            size="small"
+                            color="info"
+                            variant="contained"
+                            onClick={sortDeadline}
+                            sx={{ mr: 2 }}
+                        >
+                            Sort Deadline
+                        </Button>
+                        <FormControl >
+                            <Select
+                                sx={{ height: 30 }}
+                                value={mode}
+                                onChange={(event) => setMode(event.target.value)}
+                                displayEmpty
+                                inputProps={{ 'aria-label': 'Without label' }}
+                            >
+                                <MenuItem value="">Today</MenuItem>
+                                <MenuItem value="allday">All Day</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box>
                 </Box>
-                <TodoList />
+                <TodoList openEditTask={openEditTask} setIdx={setIdx} mode={mode} />
             </Box>
-            
+
         );
     }
     return (
         <Box mt={10} >
+            <AddTaskForm addTask={addTask} closeAddTask={closeAddTask} setOpen={setOpen}/>
+            <EditTaskForm editTask={editTask} closeEditTask={closeEditTask} idx={idx} setIdx={setIdx} />
             <Container maxWidth="md">
                 <Paper elevation={4} >
                     <Box display="flex" justifyContent="center" alignItems="center"
@@ -80,48 +134,16 @@ const Home = () => {
                         </Box>
                         <BorderColorIcon fontSize="large" />
                     </Box>
-                    <form onSubmit={handleUpdate}>
-                        <Box>
-                            <Box display="flex" justifyContent="center" mt={2}>
-                                <TextField
-                                    label="To-do Name"
-                                    value={name}
-                                    onChange={(event) => setName(event.target.value)}
-                                    variant="outlined"
-                                    size="small"
-                                    sx={{ mr: 1, width: 230 }}
-                                    InputLabelProps={{
-                                        shrink: true
-                                    }}
-                                />
-                                <TextField
-                                    type="datetime-local"
-                                    size="small"
-                                    label="Deadline"
-                                    value={date}
-                                    onChange={(event) => setDate(event.target.value)}
-                                    sx={{ width: 230 }}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                />
-                            </Box>
-                            <Box display="flex" justifyContent="center" mt={1} mb={2}>
-                                <Button
-                                    type="submit"
-                                    size="small"
-                                    color="error"
-                                    variant="contained"
-                                    sx={{ width: 468 }}
-                                >
-                                    Submit
-                                </Button>
-                            </Box>
-                        </Box>
-                    </form>
                     {todo.length === 0 ? clearTodo() : activeTodo()}
                 </Paper>
             </Container>
+            <Stack spacing={2} sx={{ width: '100%' }}>
+                <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                        Add new task had been successfully!
+                    </Alert>
+                </Snackbar>
+            </Stack>
         </Box>
     );
 

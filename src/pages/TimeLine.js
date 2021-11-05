@@ -13,10 +13,11 @@ import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 //icon
 import LaptopMacIcon from '@mui/icons-material/LaptopMac';
-import DoneIcon from '@mui/icons-material/Done';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import DeleteIcon from '@mui/icons-material/Delete';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 //myContext
 import { MyContext } from "../contexts/MyContext";
 
@@ -35,21 +36,10 @@ const TimeLine = () => {
         const output = month + ' ' + day + ', ' + year;
         return output;
     }
-    const formatTime = (date) => {
-        const dateObj = new Date(date);
-        const hour = String(dateObj.getHours()).padStart(2, '0');
-        const minute = String(dateObj.getMinutes()).padStart(2, '0');
-        return hour + ":" + minute;
-    }
     const onDeleteItem = (i) => {
         setTodo(todo.filter((item, index) => index !== i));
     }
-    const onCompletedItem = (i) => {
-        let newTodo = [...todo];
-        newTodo[i].completed = !newTodo[i].completed;
-        setTodo(newTodo);
-    }
-    const containLeft = (name, date, index) => {
+    const containLeft = (item, index) => {
         return (
             <Paper elevation={4} sx={{ display: "flex", justifyContent: "space-between", p: "24px 40px" }}>
                 <IconButton aria-label="delete" onClick={onDeleteItem.bind(this, index)}>
@@ -60,16 +50,19 @@ const TimeLine = () => {
                         fontSize="20px"
                         fontWeight="600"
                     >
-                        {name}
+                        {item.name}
                     </Box>
                     <Box>
-                        {formatTime(date)}, {formatDate(date)}
+                        {item.startTime} to {item.endTime}
+                    </Box>
+                    <Box>
+                        {item.taskTime === "everyday" ? "Everyday" : formatDate(item.date)}
                     </Box>
                 </Box>
             </Paper>
         );
     }
-    const containRight = (name, date, index) => {
+    const containRight = (item, index) => {
         return (
             <Paper elevation={4} sx={{ display: "flex", justifyContent: "space-between", p: "24px 40px" }}>
                 <Box sx={{ m: "auto 0" }}>
@@ -77,10 +70,13 @@ const TimeLine = () => {
                         fontSize="20px"
                         fontWeight="600"
                     >
-                        {name}
+                        {item.name}
                     </Box>
                     <Box>
-                        {formatTime(date)}, {formatDate(date)}
+                        {item.startTime} to {item.endTime}
+                    </Box>
+                    <Box>
+                        {item.taskTime === "everyday" ? "Everyday" : formatDate(item.date)}
                     </Box>
                 </Box>
                 <IconButton aria-label="delete" onClick={onDeleteItem.bind(this, index)}>
@@ -125,13 +121,15 @@ const TimeLine = () => {
                                 <TimelineItem key={index}>
                                     <TimelineSeparator>
                                         <TimelineConnector />
-                                        <TimelineDot color={item.completed ? "success" : "grey"} onClick={onCompletedItem.bind(this, index)}>
-                                            {item.completed ? <DoneIcon /> : <LaptopMacIcon />}
+                                        <TimelineDot 
+                                            color={item.status === "done" ? "error" : item.status === "nodone" ? "warning" : "grey"} 
+                                        >
+                                            {item.status === "done" ? <FavoriteIcon /> : item.status === "nodone" ? <DoNotDisturbIcon /> : <LaptopMacIcon />}
                                         </TimelineDot>
                                         <TimelineConnector />
                                     </TimelineSeparator>
                                     <TimelineContent sx={{ m: 'auto 0' }}>
-                                        {index % 2 === 0 ? containRight(item.name, item.date, index) : containLeft(item.name, item.date, index)}
+                                        {index % 2 === 0 ? containRight(item, index) : containLeft(item, index)}
                                     </TimelineContent>
                                 </TimelineItem>
                             );

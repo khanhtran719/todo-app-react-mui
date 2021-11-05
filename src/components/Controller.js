@@ -12,7 +12,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import TimelineIcon from '@mui/icons-material/Timeline';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+// import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import avt from "../assets/avatar.jpg";
 
@@ -94,10 +94,10 @@ const Controller = () => {
                         <Link to="/timeline" style={{textDecoration: "none", color: "black", padding: "8px"}}>To-do TimeLine</Link>
                         <TimelineIcon sx={{pt: 1, pb: 1}}/>
                     </Box>
-                    <Box display="flex" justifyContent="space-between">
+                    {/* <Box display="flex" justifyContent="space-between">
                         <Link to="/about-me" style={{textDecoration: "none", color: "black", padding: "8px", paddingBottom: 2}}>About me!</Link>
                         <AccountCircleIcon sx={{pt: 1}}/>
-                    </Box>
+                    </Box> */}
                 </AccordionDetails>
             </Accordion>
         </Paper>
