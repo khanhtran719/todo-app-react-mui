@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import Controller from "./components/Controller";
 import Home from "./pages/Home";
 import TimeLine from "./pages/TimeLine";
-// import AboutMe from "./pages/AboutMe";
+import AboutMe from "./pages/AboutMe";
 import NotFound from "./pages/NotFound";
 
 import { MyContextProvider } from "./contexts/MyContext";
@@ -24,7 +24,7 @@ const App = () => {
                         <Switch>
                             <Route path="/" exact component={Home}/>
                             <Route path="/timeline" component={TimeLine}/>
-                            {/* <Route path="/about-me" component={AboutMe} /> */}
+                            <Route path="/about-me" component={AboutMe} />
                             <Route path="*" component={NotFound} />
                         </Switch>
                     </Box>
